@@ -40,13 +40,14 @@ class MainGUI(Tkinter.Tk):
         self.__text_out = Tkinter.Text(self.__frame)
         self.__scale_var = Tkinter.DoubleVar()
         self.__scale = Tkinter.Scale(self.__frame, variable=self.__scale_var, orient=Tkinter.HORIZONTAL, to=200)
-        self.__src_dir_label.pack(side=Tkinter.TOP)
-        self.__dest_dir_label.pack(side=Tkinter.TOP)
-        choose_source.pack(side=Tkinter.LEFT)
-        choose_dest.pack(side=Tkinter.LEFT)
-        self.__scale.pack(side=Tkinter.LEFT)
-        self.__text_out.pack(side=Tkinter.BOTTOM)
+        self.__src_dir_label.pack(side=Tkinter.BOTTOM)
+        self.__dest_dir_label.pack(side=Tkinter.BOTTOM)
+        choose_source.pack(side=Tkinter.TOP)
+        choose_dest.pack(side=Tkinter.TOP)
+        self.__scale.pack(side=Tkinter.TOP)
+
         self.__start_btn.pack(side=Tkinter.BOTTOM)
+        self.__text_out.pack(side=Tkinter.BOTTOM)
 
     def _create_choose_source(self):
         self.__src_dir = tkFileDialog.askdirectory()
