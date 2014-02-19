@@ -39,7 +39,7 @@ class MainGUI(Tkinter.Tk):
         self.__src_dir_label = Tkinter.Label(self.__frame, text=src)
         self.__text_out = Tkinter.Text(self.__frame)
         self.__scale_var = Tkinter.DoubleVar()
-        self.__scale = Tkinter.Scale(self.__frame, variable=self.__scale_var, orient=Tkinter.HORIZONTAL, to=200)
+        self.__scale = Tkinter.Scale(self.__frame, variable=self.__scale_var, orient=Tkinter.HORIZONTAL, from_=10, to=200)
         self.__src_dir_label.pack(side=Tkinter.BOTTOM)
         self.__dest_dir_label.pack(side=Tkinter.BOTTOM)
         choose_source.pack(side=Tkinter.TOP)
@@ -48,6 +48,9 @@ class MainGUI(Tkinter.Tk):
 
         self.__start_btn.pack(side=Tkinter.BOTTOM)
         self.__text_out.pack(side=Tkinter.BOTTOM)
+        self.log("ImageResizer2 version " + str(ImageResizer.config["version"]) + ".")
+        self.log("Get the latest source from the git repo at " + ImageResizer.config["github_git_link"])
+        self.log("Author: %s Web Site: %s" % (ImageResizer.config["author"], ImageResizer.config["website"]))
 
     def _create_choose_source(self):
         self.__src_dir = tkFileDialog.askdirectory()
@@ -68,7 +71,7 @@ class MainGUI(Tkinter.Tk):
             self.__start_btn.config(state="disabled")
 
     def log(self, event):
-        self.__text_out.insert(Tkinter.INSERT, self._timestamp() + " - " + event+"\n")
+        self.__text_out.insert(Tkinter.END, self._timestamp() + " - " + event+"\n")
 
     def _timestamp(self):
         return datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S')

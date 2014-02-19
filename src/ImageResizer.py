@@ -26,8 +26,11 @@ class ImageObject:
         orig = Image.open(self.__fn)
         w = orig.size[0]*self.__scale
         h = orig.size[1]*self.__scale
-        new_img = orig.resize((int(w), int(h)), Image.ANTIALIAS)
-        new_img.save(self.__save_to)
+        try:
+            new_img = orig.resize((int(w), int(h)), Image.ANTIALIAS)
+            new_img.save(self.__save_to)
+        except Exception. err:
+            pass
         self.__status = "Resized."
         
     def status(self):
@@ -122,8 +125,9 @@ class ImageProcessor(threading.Thread):
 
 queue = None
 processors = []
-
-config = {"threads": 4}
+config = {"threads": 4, "version": 1.0, "github_git_link": "https://github.com/jacobcalvert/ImageResizer2.git",
+"github_url": "https://github.com/jacobcalvert/ImageResizer2", "author": "Jacob Calvert",
+"website": "http://www.jacobncalvert.com" }
 
 if __name__ == "__main__":
     gui = GUI.MainGUI()
