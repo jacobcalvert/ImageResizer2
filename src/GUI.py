@@ -26,6 +26,7 @@ class MainGUI(Tkinter.Tk):
         self.__start_btn = None
         self.__scale = None
         self.__scale_var = None
+        self.__init_time = None
         self._set_up_frame()
 
     def _set_up_frame(self):
@@ -56,19 +57,35 @@ class MainGUI(Tkinter.Tk):
         self.__src_dir = tkFileDialog.askdirectory()
         self.log("Source selected ("+self.__src_dir+")")
         self.__src_dir_label.config(text="Source: " + self.__src_dir)
+        self.__start_btn.config(state="normal")
         ImageResizer.do_scan_check(self)
 
     def _create_choose_dest(self):
         self.__dest_dir = tkFileDialog.askdirectory()
         self.log("Destination selected (" + self.__dest_dir + ")")
         self.__dest_dir_label.config(text="Destination: " + self.__dest_dir)
+        self.__start_btn.config(state="normal")
         ImageResizer.do_scan_check(self)
 
     def _call_run(self):
         ImageResizer.queue.set_scale(self.get_scale())
+        self.__init_time = time.time()
         for processor in ImageResizer.processors:
             processor.start()
             self.__start_btn.config(state="disabled")
+
+    def start_time(self):
+        return self.__init_time
+
+    def ftime(self, t):
+        t = int(t)
+        m, s = 0, 0
+        if t > 59:
+            m = t % 60
+            s = t - m*60
+        else:
+            s = t
+        return "%dm%ds" % (m, s)
 
     def log(self, event):
         self.__text_out.insert(Tkinter.END, self._timestamp() + " - " + event+"\n")

@@ -2,13 +2,14 @@
 # File:         ImageResizer.py
 # Rev:          1.0
 # Author:       Jacob Calvert
-# Dependencies: PIL, threading, os, GUI
+# Dependencies: PIL, threading, os, GUI, time
 # Contains:     ImageObject, ImageQueue, ImageProcessor
 #####################################################
 import Image
 import threading
 import os
 import GUI
+import time
 
 
 class ImageObject:
@@ -29,8 +30,8 @@ class ImageObject:
         try:
             new_img = orig.resize((int(w), int(h)), Image.ANTIALIAS)
             new_img.save(self.__save_to)
-        except Exception. err:
-            pass
+        except Exception, err:
+            print err
         self.__status = "Resized."
         
     def status(self):
@@ -115,6 +116,9 @@ class ImageProcessor(threading.Thread):
         processors.remove(self)
         if len(processors) == 0:
             self.log("Processing finished.")
+            delta_t = int(time.time() - self.__gui.start_time())
+            runtime = self.__gui.ftime(delta_t)
+            self.log("Total run time: %s" % (runtime))
 
     def log(self, event):
         if self.__gui is not None:
@@ -138,8 +142,6 @@ def do_scan_check(gui_ref):
     global queue, processors
     if gui_ref.get_source() is not None and gui_ref.get_dest() is not None:
         scale = gui_ref.get_scale()
-        if scale == 0.0:
-            scale = 0.01
         queue = ImageQueue(gui_ref.get_source(), gui_ref.get_dest(), scale, gui_ref)
         l = config["threads"]
         gui_ref.log("Adding " + str(l) + " ImageProcessors...")
